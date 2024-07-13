@@ -107,6 +107,9 @@ To use this application:
 2. Run the application.
 3. Navigate to the `Viewer` page to view the reports generated based on the database data.
 
+![image](https://github.com/user-attachments/assets/6af16364-8279-4022-968a-2361a11a22c9)
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
