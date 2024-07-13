@@ -19,14 +19,20 @@ This application showcases the integration of DevExpress Reporting tools in an A
 To run this application locally:
 
 1. Clone the repository:
-   git clone https://github.com/Usman-Zeb/ReportsApp.git
-   cd ReportsApp
+   - ```bash
+     git clone https://github.com/Usman-Zeb/ReportsApp.git
+    - ```bash
+      cd ReportsApp
 
-2. Restore NuGet packages and build the project:
-   dotnet restore
-   dotnet build
+3. Restore NuGet packages and build the project:
+   
+   - ```bash
+     dotnet restore
+   - ```bash
+     dotnet build
 
-3. Configure your local MSSQL database:
+5. Configure your local MSSQL database:
+   
    - Create a database named `DevExpressDemo`.
    - Execute the following SQL scripts to create tables (`Orders` and `Products`) and populate them with sample data:
 
