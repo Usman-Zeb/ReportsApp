@@ -2,7 +2,7 @@ trigger:
   batch: true
   branches:
     include:
-    - main
+      - main
 
 pool:
   vmImage: 'windows-latest'
@@ -12,21 +12,46 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+  - stage: Build
+    displayName: 'Build Stage'
+    jobs:
+      - job: BuildJob
+        displayName: 'Build Job'
+        steps:
+          - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+          - task: NuGetCommand@2
+            inputs:
+              restoreSolution: '$(solution)'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+          - task: VSBuild@1
+            inputs:
+              solution: '$(solution)'
+              msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+              platform: '$(buildPlatform)'
+              configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+          - task: VSTest@2
+            inputs:
+              platform: '$(buildPlatform)'
+              configuration: '$(buildConfiguration)'
+
+  - stage: BuildStage
+    displayName: "Build"
+    variables:
+      - group: build_concurrency_lock  # Reference to the variable group
+    jobs:
+      - job: BuildStageJob
+        displayName: "Build Stage Job"
+        pool:
+          vmImage: 'windows-latest'
+        steps:
+          - checkout: self
+
+          # Additional steps as per your requirements
+          - script: echo "Locking build concurrency..."
+            displayName: "Locking build concurrency"
+          - script: echo "Build running sequentially due to shared environment setup."
+            displayName: "Sequential build execution message"
+            continueOnError: true
