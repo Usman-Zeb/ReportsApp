@@ -4,8 +4,11 @@ trigger:
     include:
       - main
 
+
 pool:
+  name: ReportsAgent 
   vmImage: 'windows-latest'
+  
 
 variables:
   solution: '**/*.sln'
