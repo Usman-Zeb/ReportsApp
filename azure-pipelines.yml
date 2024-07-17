@@ -36,22 +36,3 @@ stages:
             inputs:
               platform: '$(buildPlatform)'
               configuration: '$(buildConfiguration)'
-
-  - stage: BuildStage
-    displayName: "Build"
-    variables:
-      - group: build_concurrency_lock  # Reference to the variable group
-    jobs:
-      - job: BuildStageJob
-        displayName: "Build Stage Job"
-        pool:
-          vmImage: 'windows-latest'
-        steps:
-          - checkout: self
-
-          # Additional steps as per your requirements
-          - script: echo "Locking build concurrency..."
-            displayName: "Locking build concurrency"
-          - script: echo "Build running sequentially due to shared environment setup."
-            displayName: "Sequential build execution message"
-            continueOnError: true
